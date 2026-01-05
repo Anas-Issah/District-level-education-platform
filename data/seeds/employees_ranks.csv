@@ -1,0 +1,86 @@
+id,rank_name
+1,Director General
+2,Deputy Director General
+3,Director I
+4,Director II
+5,Deputy Director
+6,Assisstant Director
+7,Principal Superintendent
+8,Senior Superintendent I
+9,Senior Superintendent II
+10,Superintedent I
+11,Superintendent II
+12,Pupil Teacher
+13,Chief Accountant
+14,Chief Accountant II
+15,Deputy Chief Accountant
+16,Deputy Chief Accountant II
+17,Principal Accountant (Chartered)
+18,Principal Accountant (Unit Head)
+19,Principal Accountant (Basic Grade)
+20,Senior Accountant
+21,Accountant
+22,Accountant Assistant
+23,Chief Admin Officer
+24,Chief Admin Officer II
+25,Deputy Chief Admin Officer
+26,Deputy Chief Admin Officer II
+27,Principal Admin Officer (Chartered)
+28,Principal Admin Officer (Unit Head)
+29,Principal Admin Officer (Basic Grade)
+30,Senior Admin Officer
+31,Administrative Officer
+32,Assistant Admin Officer
+33,Senior Clerk
+34,Clerk Grade I
+35,Clerk Grade II
+36,Chief Internal Auditor
+37,Chief Internal Auditor II
+38,Deputy Chief Auditor
+39,Deputy Chief Auditor II
+40,Principal Internal Auditor (Chartered)
+41,Principal Internal Auditor (Unit Head)
+42,Principal Internal Auditor (Basic Grade)
+43,Senior Internal Auditor
+44,Internal Auditor
+45,Assistant Internal Auditor
+46,Internal Audit Assistant Grade I
+47,Internal Audit Assistant Grade II
+48,Internal Audit Assistant Grade III
+49,Chief Domestic Bursar
+50,Deputy Chief Domestic Bursar
+51,Principal Domestic Bursar
+52,Senior Domestic Bursar
+53,Domestic Bursar
+54,Assistant Domestic Bursar
+55,Senior Matron
+56,Matron
+57,Chief Cook
+58,Cook
+59,Assistant Cook
+60,Head Steward
+61,Steward
+62,Head Laundry Man
+63,Laundry Man
+64,Head Pantry Hand
+65,Pantry Hand
+66,Senior House Mother
+67,House Mother
+68,Chief Librarian
+69,Deputy Chief Librarian
+70,Principal Librarian
+71,Senior Librarian
+72,Librarian
+73,Assistant Librarian
+74,Senior Library Assistant
+75,Library Assistant
+76,Junior Library Assistant
+77,Chief Laboratory Technician
+78,Deputy Chief Lab Technician
+79,Principal Lab Technician
+80,Senior Lab Technician
+81,Laboratory Technician
+82,Assistant Lab Technician
+83,Senior Lab Assistant
+84,Laboratory Assistant Grade I
+85,Laboratory Assistant Grade II

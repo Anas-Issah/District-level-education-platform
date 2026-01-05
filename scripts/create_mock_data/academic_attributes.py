@@ -6,7 +6,7 @@ into a district-education database
 
 """
 
-path = pathlib.Path.cwd()  #parent folder path
+path = pathlib.Path.cwd()  #parent directory
 """
 #EXAMS TYPES
 
@@ -35,10 +35,10 @@ with open(os.path.join(path,'data/seeds/student_level.csv'),'w') as file:
         file_writer.writerow({'id':num,'level_name':level})
         num += 1
 
-"""
 #SUBJECT
 
-subjects = ['English Language','Mathematics','Integrated Science','Social Studies','Computing',
+subjects = [
+    'English Language','Mathematics','Integrated Science','Social Studies','Computing',
             'Career Technology','Creative Arts','Asante Twi','French','Religious And Moral Ed.']
 
 num = 1
@@ -48,3 +48,37 @@ with open(os.path.join(path,'data/seeds/subject.csv'),'w') as file:
     for subject in subjects:
         file_writer.writerow({'id':num,'subject_name':subject})
         num += 1
+"""
+
+#MOTIVATTION LOOKUP
+
+lables = [
+            'High','Moderate','Low'
+]
+
+score_value =[
+            5,3,1
+] 
+
+num = 1
+with open(os.path.join(path,'data/seeds/motivation_lookup.csv'),'w') as file:
+    file_writer = csv.DictWriter(file,['id','label','score_value'])
+    file_writer.writeheader()
+    for lable,value in zip(lables,score_value):
+        file_writer.writerow({'id':num,'label':lable,'score_value':value})
+        num += 1
+
+#CONDUCT
+lables = [
+    'Constructive','Passive','Disruptive'
+]
+
+num = 1
+
+with open(os.path.join(path,'data/seeds/conduct_lookup.csv'),'w') as file:
+    file_writer = csv.DictWriter(file,['id','label','score_value'])
+    file_writer.writeheader()
+    for lable,value in zip(lables,score_value):
+        file_writer.writerow({'id':num,'label':lable,'score_value':value})
+        num += 1
+

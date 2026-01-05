@@ -73,7 +73,7 @@ COMMENT ON TABLE area IS 'Geographical areas with the district';
 
 CREATE TABLE IF NOT EXISTS employee_type(
     id SMALLINT GENERATED ALWAYS  AS IDENTITY PRIMARY KEY;
-    title VARCHAR(50) NOT NULL,
+    type VARCHAR(50) NOT NULL,
     CONSTRAINT uq_title UNIQUE (title)
 );
 
@@ -107,6 +107,18 @@ COMMENT ON TABLE circuit IS 'Circuits within the district';
 
 
 --=======================================
+--RELIGION
+--=======================================
+
+CREATE TABLE IF NOT EXISTS religion(
+    id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    religion_name VARCHAR(50)
+);
+
+COMMENT ON TABLE religion IS 'Main religions in the country'
+
+
+--=======================================
 --RANK
 --=======================================
 
@@ -117,6 +129,8 @@ CREATE TABLE IF NOT EXIST employee_rank(
 );
 
 COMMENT ON TABLE rank IS 'Ranks within Ghana Education Service';
+
+
 
 
 --=======================================
@@ -166,9 +180,10 @@ CREATE TABLE IF NOT EXISTS employee(
     address_id INT  NOT NULL,
     employee_type_id INT  NOT NULL,
     station_id INT NOT NULL,
+    first_appointment_date DATE NOT NULL,
     date_posted DATE NOT NULL,
     speciality_id INT,
-    realigion_id INT NOT NULL
+    religion_id INT NOT NULL
     last_promotion_date DATE ,
     date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_employee_education_level FOREIGN KEY(education_level_id) REFERENCES education_level(id),
@@ -208,9 +223,10 @@ CREATE TABLE IF NOT EXISTS employee_history(
     address_id INT  NOT NULL,
     employee_type_id INT  NOT NULL,
     station_id INT NOT NULL,
+    first_appointment_date DATE NOT NULL,
     date_posted DATE NOT NULL,
     speciality_id INT,
-    realigion_id INT NOT NULL
+    religion_id INT NOT NULL
     last_promotion_date DATE ,
     date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_employee_education_level FOREIGN KEY(education_level_id) REFERENCES education_level(id),
@@ -252,9 +268,10 @@ CREATE TABLE IF NOT EXISTS past_employee(
     address_id INT  NOT NULL,
     employee_type_id INT  NOT NULL,
     station_id INT NOT NULL,
+    first_appointment_date DATE NOT NULL,
     date_posted DATE NOT NULL,
     speciality_id INT,
-    realigion_id INT NOT NULL
+    religion_id INT NOT NULL
     last_promotion_date DATE ,
     date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_employee_education_level FOREIGN KEY(education_level_id) REFERENCES education_level(id),
@@ -439,7 +456,7 @@ COMMENT ON TABLE student_evaluation IS 'Teacher evaluation of student';
 CREATE TABLE IF NOT EXISTS motivation_lookup(
     id SMALLINT GENERATED ALWAYS  AS IDENTITY PRIMARY KEY,
     lable VARCHAR(30) NOT NULL,
-    score_vale INT NOT NULL
+    score_value INT NOT NULL
 );
 
 COMMENT ON TABLE motivation_lookup IS 'Lookup table for student motivation level'
@@ -452,7 +469,7 @@ COMMENT ON TABLE motivation_lookup IS 'Lookup table for student motivation level
 CREATE TABLE IF NOT EXISTS conduct_lookup(
     id SMALLINT GENERATED ALWAYS  AS IDENTITY PRIMARY KEY,
     lable VARCHAR(30) NOT NULL,
-    score_vale INT NOT NULL
+    score_value INT NOT NULL
 );
 
 COMMENT ON TABLE conduct_lookup IS 'Lookup table for student conduct'
@@ -636,17 +653,6 @@ CREATE TABLE IF NOT EXIST past_student(
 COMMENT ON TABLE student IS 'Past tudents of the district';
 
 
---=======================================
---RELIGION
---=======================================
-
-CREATE TABLE IF NOT EXISTS religion(
-    id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    religion_name VARCHAR(50)
-);
-
-COMMENT ON TABLE religion IS 'Main religions in the country'
-
 
 --=======================================
 --PAST STUDENT REASON
@@ -683,12 +689,9 @@ CREATE TABLE IF NOT EXISTS student_transfer(
 COMMENT ON TABLE religion IS 'Internal district transfer list'
 
 
-
-
-
-
-
-
+--=======================================
+--TRIGGER FUNCTIONS
+--=======================================
 
 
 
