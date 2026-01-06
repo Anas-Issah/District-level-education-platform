@@ -12,7 +12,7 @@ into a district-education database
 """
 
 path = pathlib.Path.cwd()  #parent di
-fake = Faker("en_US")
+
 
 gender = ['Male','Female']
 
@@ -26,7 +26,7 @@ def generate_staff_id(num:int) -> str:
     :type num: int
     :return: a string representing mock staff id
     :rtype: str
-    """ 
+    """
     prefix = '00'
     if num < 10:
         return prefix + '00' + str(num)
@@ -35,10 +35,7 @@ def generate_staff_id(num:int) -> str:
     else:
         return prefix + str(num)     
     
-def generate_liscence_num()-> str:
-    prefix = 'QT/0'
-
-    return '' 
+ 
 def genrate_email(name:list)->str:
     """
     Docstring for genrate_email
@@ -53,13 +50,6 @@ def genrate_email(name:list)->str:
         email +=  n
     return email + '@example.com'
 
-prefix = [
-    'Mr.', 'Ms.', 'Mrs.', 'Miss','Dr.', 'Prof.', 'Engr.',
-        'Arch.', 'Rev.', 'Fr.', 'Sr.', 'Br.', 'Rabbi', 'Imam',
-         'Pastor','Gen.', 'Col.', 'Maj.', 'Capt.', 'Lt.', 'Sgt.',
-        'Cpl.', 'Pvt.','Sir' , 'Dame', 'Lord', 'Lady', 'Hon.', 
-        'Excellency'
-        ]
 
 def gen_female_emp()->list:
     """
@@ -68,28 +58,115 @@ def gen_female_emp()->list:
     :return: list containing employee details
     :rtype: list[Any]
     """
-    title = random.choice(prefix)
+    fake = Faker("en_US")
+
+    id = uuid7()
+    title = random.randint(1,22)
     first_name = fake.first_name_female()
     last_name = fake.last_name()
-    middle_name = fake.first_name()
     staff_id = generate_staff_id(500)
-    email = genrate_email([first_name,middle_name,last_name])
     phone = '"' + '{' + f"{fake.basic_phone_number()}" +','+   f"{fake.basic_phone_number()}" + '}' + '"' 
     birth_date = fake.date_between(start_date='-55y',end_date='-25y')
     emp_gender = 'Female'
     edu_level = random.randint(1,len(educational_level)-1)
-    rank = 'null'
+    rank = random.randint(3,12)
     address_id = 'null'
-    employee_type = ''
+    employee_type = 1
     station_id = ''
     first_appointment_date = fake.date_between(start_date='-20y',end_date='-2y')
     date_posted = fake.date_between()
-    speciality_id = ''
-    religion_id = ''
+    speciality_id = random.randint(1,len(specialities))
+    religion_id = random.randint(1,3)
     last_promotion_date = fake.date_between()
     license_num = 'QT/' + staff_id + '/' + str(first_appointment_date.year)
 
-    return [title,first_name,last_name,middle_name,staff_id,license_num,email,phone,birth_date,emp_gender,
+    # get a middle name or not
+    dec = random.randint(1,2)     
+    if dec == 1:
+        other_name = fake.first_name()
+        email = genrate_email([first_name,other_name,last_name])
+        return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
+            edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
+            last_promotion_date]
+    else:
+        other_name = 'N/A'
+        email = genrate_email([first_name,last_name])
+        return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
             edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
             last_promotion_date]
     
+def gen_male_emp()->list:
+    """
+    Docstring for gen_male_emp
+    
+    :return: list containing employee details
+    :rtype: list[Any]
+    """
+    fake = Faker("en_US")
+
+    id = uuid7()
+    title = random.randint(8,29)
+    first_name = fake.first_name_male()
+    last_name = fake.last_name()
+    staff_id = generate_staff_id(500)
+    phone = '"' + '{' + f"{fake.basic_phone_number()}" +','+   f"{fake.basic_phone_number()}" + '}' + '"' 
+    birth_date = fake.date_between(start_date='-55y',end_date='-25y')
+    emp_gender = 'Male'
+    edu_level = random.randint(1,len(educational_level)-1)
+    rank = random.randint(3,12)
+    address_id = 'null'
+    employee_type = 1
+    station_id = ''
+    first_appointment_date = fake.date_between(start_date='-20y',end_date='-2y')
+    date_posted = fake.date_between()
+    speciality_id = random.randint(1,len(specialities))
+    religion_id = random.randint(1,3)
+    last_promotion_date = (fake.date_between())
+    license_num = 'QT/' + staff_id + '/' + str(first_appointment_date.year)
+    date_created = date_posted
+
+    # get a middle name or not
+    dec = random.randint(1,2)     
+    if dec == 1:
+        other_name = fake.first_name()
+        email = genrate_email([first_name,other_name,last_name])
+        return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
+            edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
+            last_promotion_date,date_created]
+    else:
+        other_name = 'N/A'
+        email = genrate_email([first_name,last_name])
+        return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
+            edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
+            last_promotion_date,date_created]
+   
+# create employees
+employess = []
+
+choice = random.randint(1,2)
+for x in range(500):
+    if choice == 1:
+        employess.append(gen_female_emp())
+    else:
+        employess.append(gen_male_emp)
+
+# write employees to file
+with open(os.path.join(path,'data/seeds/employess.csv'),'w') as file:
+    file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','staff_id','license_num',
+                                       'email','phone','birth_date','gender','education_level','rank_id',
+                                       'address_id','employee_type','station_id','first_appointment_date',
+                                       'date_posted','speciality','last_promotion_date','date_created'])
+    file_writer.writeheader()
+
+    for employee in employess:
+        file_writer.writerow({'id':employee[0],'first_name':employee[1],'last_name':employee[2],
+                              'other_name':employee[3],'staff_id':employee[4],'license_num':employee[5],
+                            'email':employee[6],'phone':employee[7],'birth_date':employee[8],
+                            'gender':employee[9],'education_level':employee[10],'rank_id':employee[11],
+                            'gender':employee[12],'education_level':employee[13],'rank_id':employee[14],
+                            'address_id':employee[15],'employee_type':employee[16],'station_id':employee[17],
+                            'first_appointment_date':employee[18],'date_posted':employee[19],
+                            'speciality':employee[20],'last_promotion_date':employee[21],'date_created':employee[22]})
+
+
+

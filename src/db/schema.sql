@@ -37,8 +37,40 @@ CREATE TYPE guardian_student_relationship_type AS ENUM(
     'Family Friend','Other'
 );
 
+--=======================================
+--PARENT STUDENT RELATIONSHIP CUSTOM TYPE
+--=======================================
 
-COMMENT ON TABLE employee IS 'Employee details like name, address, station, etc';
+CREATE TYPE parent_student_rela_type ENUM('Mother','Father')
+
+--=======================================
+--NAME PREFIX LOOKUP
+--=======================================
+
+CREATE TABLE IF NOT EXISTS name_prefix_lookup(
+    id GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    prefix VARCHAR(20) NOT NULL
+):
+
+--=======================================
+--GUARDIAL STUDENT RELATIONSHIP
+--=======================================
+
+CREATE TABLE IF NOT EXISTS guardian_student_relationship(
+    id GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    relationship VARCHAR(30) NOT NULL
+);
+
+
+--=======================================
+--OCCUPATION
+--=======================================
+
+CREATE TABLE IF NOT EXISTS occupation(
+    id GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    occupation VARCHAR(30) NOT NULL
+);
+
 
 
 --=======================================
@@ -165,7 +197,7 @@ COMMENT ON TABLE speciality IS 'Teacher level or subject speciality';
 
 CREATE TABLE IF NOT EXISTS employee(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v7(),
-    prefix name_prefix NOT NULL,
+    prefix_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50)  NOT NULL,
     other_name VARCHAR(70) NULL,
@@ -193,6 +225,7 @@ CREATE TABLE IF NOT EXISTS employee(
     CONSTRAINT fk_station_id FOREIGN KEY(station_id) REFERENCES station(id),
     CONSTRAINT fk_specialiity_id FOREIGN KEY (speciality_id) REFERENCES speciality(id),
     CONSTRAINT fk_religion_id FOREIGN KEY (speciality_id) REFERENCES religion(id),
+    CONSTRAINT fk_pefix_id FOREIGN KEY (prefix_id) REFERENCES name_prefix_lookup(id)
     CONSTRAINT uq_staff_id UNIQUE (staff_id),
     CONSTRAINT uq_liscence_number UNIQUE (liscence_number),
     CONSTRAINT uq_phone1 UNIQUE (phone1)
@@ -208,14 +241,14 @@ CREATE TABLE IF NOT EXISTS employee(
 CREATE TABLE IF NOT EXISTS employee_history(
     id BIGINT GENERATED ALWAYS  AS IDENTITY PRIMARY KEY,
     id UUID PRIMARY KEY DEFAULT uuid_generate_v7(),
-    prefix name_prefix NOT NULL,
+    prefix_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50)  NOT NULL,
     other_name VARCHAR(70) NULL,
     staff_id VARCHAR(20)  NOT NULL INDEX,
     liscence_number VARCHAR(20) INDEX,
     email VARCHAR(50) NULL,
-    phone VARCHAR(14)[]  NOT NULL,
+    phone1 VARCHAR(14)[]  NOT NULL,
     birth_date DATE NOT NULL,
     gender gender_type NOT NULL,
     education_level_id INT NOT NULL,
@@ -236,6 +269,7 @@ CREATE TABLE IF NOT EXISTS employee_history(
     CONSTRAINT fk_station_id FOREIGN KEY(station_id) REFERENCES station(id),
     CONSTRAINT fk_specialiity_id FOREIGN KEY (speciality_id) REFERENCES speciality(id),
     CONSTRAINT fk_religion_id FOREIGN KEY (speciality_id) REFERENCES religion(id),
+    CONSTRAINT fk_pefix_id FOREIGN KEY (prefix_id) REFERENCES name_prefix_lookup(id)
     CONSTRAINT uq_staff_id UNIQUE (staff_id),
     CONSTRAINT uq_liscence_number UNIQUE (liscence_number),
     CONSTRAINT uq_phone1 UNIQUE (phone1)
@@ -253,14 +287,14 @@ COMMENT ON TABLE employee_history IS 'Table to track changes in employee data';
 CREATE TABLE IF NOT EXISTS past_employee(
     id BIGINT GENERATED ALWAYS  AS IDENTITY PRIMARY KEY,
     id UUID PRIMARY KEY DEFAULT uuid_generate_v7(),
-    prefix name_prefix NOT NULL,
+    prefix_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50)  NOT NULL,
     other_name VARCHAR(70) NULL,
     staff_id VARCHAR(20)  NOT NULL INDEX,
     liscence_number VARCHAR(20) INDEX,
     email VARCHAR(50) NULL,
-    phone VARCHAR(14)[],
+    phone1 VARCHAR(14)[]  NOT NULL,
     birth_date DATE NOT NULL,
     gender gender_type NOT NULL,
     education_level_id INT NOT NULL,
@@ -281,6 +315,7 @@ CREATE TABLE IF NOT EXISTS past_employee(
     CONSTRAINT fk_station_id FOREIGN KEY(station_id) REFERENCES station(id),
     CONSTRAINT fk_specialiity_id FOREIGN KEY (speciality_id) REFERENCES speciality(id),
     CONSTRAINT fk_religion_id FOREIGN KEY (speciality_id) REFERENCES religion(id),
+    CONSTRAINT fk_pefix_id FOREIGN KEY (prefix_id) REFERENCES name_prefix_lookup(id)
     CONSTRAINT uq_staff_id UNIQUE (staff_id),
     CONSTRAINT uq_liscence_number UNIQUE (liscence_number),
     CONSTRAINT uq_phone1 UNIQUE (phone1)
@@ -497,19 +532,24 @@ COMMENT ON TABLE teacher_subject IS 'Subject taught by a teacher';
 
 CREATE TABLE IF NOT EXISTS parent(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v7(),
-    prefix name_prefix NOT NULL,
+    prefix_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     other_name VARCHAR(70) NULL,
     email VARCHAR9(70) NULL,
     phone VARCHAR(14) [],
-    gender gender_type NOT NULL,
+    relationship parent_student_rela_type NOT NULL,
+    education_level_id INT NOT NULL,
+    occupation INT NOT NULL,
     address_id INT NOT NULL,
     status alive_status_type NOT NULL,
     student_id UUID NOT NULL INDEX,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_address_id FOREIGN KEY REFERENCES address (id),
-    CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id)
+    CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id),
+    CONSTRAINT fk_pefix_id FOREIGN KEY (prefix_id) REFERENCES name_prefix_lookup(id),
+    CONSTRAINT fk_parent_educational_level FOREIGN KEY (education_level_id) REFERENCES education_level(id),
+    CONSTRAINT fk_occupation_id FOREIGN KEY (occupation_id) REFERENCES occupation(id)
 );
 
 COMMENT ON TABLE parent IS 'Parents of students';
@@ -521,19 +561,25 @@ COMMENT ON TABLE parent IS 'Parents of students';
 
 CREATE TABLE IF NOT EXISTS guardian(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v7(),
-    prefix name_prefix NOT NULL,
+    prefix_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     other_name VARCHAR(70) NULL,
     email VARCHAR9(70) NULL,
     phone VARCHAR(14) [],
     gender gender_type NOT NULL,
+    education_level_id INT NOT NULL,
+    occupation_id INT NOT NULL,
     address_id INT NOT NULL,
     student_id UUID NOT NULL INDEX,
-    relationship guardian_student_relationship_type NOT NULL,
+    guardian_student_relationship_id INT  NOT NULL,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_address_id FOREIGN KEY REFERENCES address (id),
-    CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id)
+    CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id),
+    CONSTRAINT fk_pefix_id FOREIGN KEY (prefix_id) REFERENCES name_prefix_lookup(id)
+    CONSTRAINT fk_guardian_student_relationship_id FOREIGN KEY (guardian_student_relationship_id) REFERENCES guardian_student_relationship(id),
+    CONSTRAINT fk_occupation_id FOREIGN KEY (occupation_id) REFERENCES occupation (id),
+    CONSTRAINT fk_guardian_education_level FOREIGN KEY (education_level) REFERENCES education_level(id)
 );
 
 COMMENT ON TABLE guardian IS 'Guardian of a STUDENT';
@@ -566,21 +612,25 @@ COMMENT ON TABLE student_history IS 'Table to track changes in student data';
 --=======================================
 
 CREATE TABLE IF NOT EXISTS parent_history(
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id UUID PRIMARY KEY,
-    prefix name_prefix NOT NULL,
+    prefix_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     other_name VARCHAR(70) NULL,
     email VARCHAR9(70) NULL,
     phone VARCHAR(14) [],
-    gender gender_type NOT NULL,
+    relationship parent_student_rela_type NOT NULL,
+    education_level_id INT NOT NULL,
+    occupation INT NOT NULL,
     address_id INT NOT NULL,
     status alive_status_type NOT NULL,
     student_id UUID NOT NULL INDEX,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_address_id FOREIGN KEY REFERENCES address (id),
-    CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id)
+    CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id),
+    CONSTRAINT fk_pefix_id FOREIGN KEY (prefix_id) REFERENCES name_prefix_lookup(id),
+    CONSTRAINT fk_parent_educational_level FOREIGN KEY (education_level_id) REFERENCES education_level(id),
+    CONSTRAINT fk_occupation_id FOREIGN KEY (occupation_id) REFERENCES occupation(id)
 ):
 
 COMMENT ON TABLE parent_history IS 'Table to track changes in parent''s data';
@@ -591,21 +641,26 @@ COMMENT ON TABLE parent_history IS 'Table to track changes in parent''s data';
 --=======================================
 
 CREATE TABLE IF NOT EXIST guardian_history(
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id UUID PRIMARY KEY,
-    prefix name_prefix NOT NULL,
+    prefix_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     other_name VARCHAR(70) NULL,
     email VARCHAR9(70) NULL,
     phone VARCHAR(14) [],
     gender gender_type NOT NULL,
+    education_level_id INT NOT NULL,
+    occupation_id INT NOT NULL,
     address_id INT NOT NULL,
-    student_id UUID NOT NULL,
-    relationship guardian_student_relationship_type NOT NULL,
+    student_id UUID NOT NULL INDEX,
+    guardian_student_relationship_id INT  NOT NULL,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_address_id FOREIGN KEY REFERENCES address (id),
-    CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id)
+    CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id),
+    CONSTRAINT fk_pefix_id FOREIGN KEY (prefix_id) REFERENCES name_prefix_lookup(id)
+    CONSTRAINT fk_guardian_student_relationship_id FOREIGN KEY (guardian_student_relationship_id) REFERENCES guardian_student_relationship(id),
+    CONSTRAINT fk_occupation_id FOREIGN KEY (occupation_id) REFERENCES occupation (id),
+    CONSTRAINT fk_guardian_education_level FOREIGN KEY (education_level) REFERENCES education_level(id)
 ):
 
 COMMENT ON TABLE guardian_history IS 'Table to track changes in guardian data'
