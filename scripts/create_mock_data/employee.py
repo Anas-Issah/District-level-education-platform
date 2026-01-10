@@ -36,9 +36,9 @@ def generate_staff_id(num:int) -> str:
         return prefix + str(num)     
     
  
-def genrate_email(name:list)->str:
+def generate_email(name:list)->str:
     """
-    Docstring for genrate_email
+    Docstring for generate_email
     
     :param name: a list containing the names of a person
     :type name: list
@@ -84,13 +84,13 @@ def gen_female_emp()->list:
     dec = random.randint(1,2)     
     if dec == 1:
         other_name = fake.first_name()
-        email = genrate_email([first_name,other_name,last_name])
+        email = generate_email([first_name,other_name,last_name])
         return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
             edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
             last_promotion_date]
     else:
         other_name = 'N/A'
-        email = genrate_email([first_name,last_name])
+        email = generate_email([first_name,last_name])
         return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
             edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
             last_promotion_date]
@@ -129,13 +129,13 @@ def gen_male_emp()->list:
     dec = random.randint(1,2)     
     if dec == 1:
         other_name = fake.first_name()
-        email = genrate_email([first_name,other_name,last_name])
+        email = generate_email([first_name,other_name,last_name])
         return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
             edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
             last_promotion_date,date_created]
     else:
         other_name = 'N/A'
-        email = genrate_email([first_name,last_name])
+        email = generate_email([first_name,last_name])
         return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
             edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
             last_promotion_date,date_created]

@@ -542,7 +542,7 @@ CREATE TABLE IF NOT EXISTS parent(
     education_level_id INT NOT NULL,
     occupation INT NOT NULL,
     address_id INT NOT NULL,
-    status alive_status_type NOT NULL,
+    alive_status alive_status_type NOT NULL,
     student_id UUID NOT NULL INDEX,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_address_id FOREIGN KEY REFERENCES address (id),

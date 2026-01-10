@@ -62,10 +62,10 @@ score_value =[
 
 num = 1
 with open(os.path.join(path,'data/seeds/motivation_lookup.csv'),'w') as file:
-    file_writer = csv.DictWriter(file,['id','label','score_value'])
+    file_writer = csv.DictWriter(file,['id','lable','score_value'])
     file_writer.writeheader()
     for lable,value in zip(lables,score_value):
-        file_writer.writerow({'id':num,'label':lable,'score_value':value})
+        file_writer.writerow({'id':num,'lable':lable,'score_value':value})
         num += 1
 
 #CONDUCT
@@ -76,9 +76,9 @@ lables = [
 num = 1
 
 with open(os.path.join(path,'data/seeds/conduct_lookup.csv'),'w') as file:
-    file_writer = csv.DictWriter(file,['id','label','score_value'])
+    file_writer = csv.DictWriter(file,['id','lable','score_value'])
     file_writer.writeheader()
     for lable,value in zip(lables,score_value):
-        file_writer.writerow({'id':num,'label':lable,'score_value':value})
+        file_writer.writerow({'id':num,'lable':lable,'score_value':value})
         num += 1
 
