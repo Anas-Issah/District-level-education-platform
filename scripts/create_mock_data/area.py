@@ -30,3 +30,4 @@ with open(os.path.join(path,'data/seeds/area.csv'),'w') as file:
 
     for area in sunyani_municipal_areas:
         file_writer.writerow({'id':num,'name':area})
+        num += 1

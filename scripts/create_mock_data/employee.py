@@ -140,33 +140,27 @@ def gen_male_emp()->list:
             edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
             last_promotion_date,date_created]
    
-# create employees
-employess = []
 
-choice = random.randint(1,2)
-for x in range(500):
-    if choice == 1:
-        employess.append(gen_female_emp())
-    else:
-        employess.append(gen_male_emp)
+def write_employee(employees:list):
 
-# write employees to file
-with open(os.path.join(path,'data/seeds/employess.csv'),'w') as file:
-    file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','staff_id','license_num',
-                                       'email','phone','birth_date','gender','education_level','rank_id',
-                                       'address_id','employee_type','station_id','first_appointment_date',
-                                       'date_posted','speciality','last_promotion_date','date_created'])
-    file_writer.writeheader()
+    with open(os.path.join(path,'data/seeds/employess.csv'),'w') as file:
+        file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','staff_id','license_num',
+                                        'email','phone','birth_date','gender','education_level','rank_id',
+                                        'address_id','employee_type','station_id','first_appointment_date',
+                                        'date_posted','speciality','last_promotion_date','date_created'])
+        file_writer.writeheader()
 
-    for employee in employess:
-        file_writer.writerow({'id':employee[0],'first_name':employee[1],'last_name':employee[2],
-                              'other_name':employee[3],'staff_id':employee[4],'license_num':employee[5],
-                            'email':employee[6],'phone':employee[7],'birth_date':employee[8],
-                            'gender':employee[9],'education_level':employee[10],'rank_id':employee[11],
-                            'gender':employee[12],'education_level':employee[13],'rank_id':employee[14],
-                            'address_id':employee[15],'employee_type':employee[16],'station_id':employee[17],
-                            'first_appointment_date':employee[18],'date_posted':employee[19],
-                            'speciality':employee[20],'last_promotion_date':employee[21],'date_created':employee[22]})
+        for employee in employees:
+            file_writer.writerow({'id':employee[0],'first_name':employee[1],'last_name':employee[2],
+                                'other_name':employee[3],'staff_id':employee[4],'license_num':employee[5],
+                                'email':employee[6],'phone':employee[7],'birth_date':employee[8],
+                                'gender':employee[9],'education_level':employee[10],'rank_id':employee[11],
+                                'gender':employee[12],'education_level':employee[13],'rank_id':employee[14],
+                                'address_id':employee[15],'employee_type':employee[16],'station_id':employee[17],
+                                'first_appointment_date':employee[18],'date_posted':employee[19],
+                                'speciality':employee[20],'last_promotion_date':employee[21],'date_created':employee[22]})
 
+
+# CREATE AND WRITE EMPLOYEES
 
 

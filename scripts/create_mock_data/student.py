@@ -2,7 +2,8 @@ import csv, pathlib, os,random,datetime,math
 from faker import Faker
 from uuid6 import uuid7
 
-import parents
+
+import parent
 import address
 """
 script that writes data to a csv file for insertion
@@ -24,11 +25,11 @@ def gen_female_stu(sch_id,lvl)-> list:
     school_id = sch_id
     # determine birth date 
     if lvl == 1:
-        birth_date = fake.date_between(start_date='-5y',end_date='4y')
+        birth_date = fake.date_between(start_date='-5y',end_date='-4y')
     elif lvl == 2:
-        birth_date = fake.date_between(start_date='-6y',end_date='5y')
+        birth_date = fake.date_between(start_date='-6y',end_date='-5y')
     elif lvl == 3:
-        birth_date = fake.date_between(start_date='-7y',end_date='6y')
+        birth_date = fake.date_between(start_date='-7y',end_date='-6y')
     elif lvl == 4:
         birth_date = fake.date_between(start_date='-8y',end_date='-7y')
     elif lvl == 5:
@@ -36,15 +37,15 @@ def gen_female_stu(sch_id,lvl)-> list:
     elif lvl == 6:
         birth_date = fake.date_between(start_date='-10y',end_date='-9y')
     elif lvl == 7:
-        birth_date = fake.date_between(start_date='-11',end_date='10')
+        birth_date = fake.date_between(start_date='-11',end_date='-10')
     elif lvl == 8:
         birth_date = fake.date_between(start_date='-12y',end_date='-11y')
     elif lvl == 9:
-        birth_date = fake.date_between(start_date='-13y',end_date='12y')
+        birth_date = fake.date_between(start_date='-13y',end_date='-12y')
     elif lvl == 10:
-        birth_date = fake.date_between(start_date='-14y',end_date='13y')
+        birth_date = fake.date_between(start_date='-14y',end_date='-13y')
     else:
-        birth_date = fake.date_between(start_date='-16y',end_date='14y')
+        birth_date = fake.date_between(start_date='-16y',end_date='-14y')
         
     
     admission_date = fake.date_between(start_date='-1y',end_date='-0y')
@@ -77,11 +78,11 @@ def gen_male_stu(sch_id,lvl):
     school_id =sch_id
     # determine birth date 
     if lvl == 1:
-        birth_date = fake.date_between(start_date='-5y',end_date='4y')
+        birth_date = fake.date_between(start_date='-5y',end_date='-4y')
     elif lvl == 2:
-        birth_date = fake.date_between(start_date='-6y',end_date='5y')
+        birth_date = fake.date_between(start_date='-6y',end_date='-5y')
     elif lvl == 3:
-        birth_date = fake.date_between(start_date='-7y',end_date='6y')
+        birth_date = fake.date_between(start_date='-7y',end_date='-6y')
     elif lvl == 4:
         birth_date = fake.date_between(start_date='-8y',end_date='-7y')
     elif lvl == 5:
@@ -89,17 +90,17 @@ def gen_male_stu(sch_id,lvl):
     elif lvl == 6:
         birth_date = fake.date_between(start_date='-10y',end_date='-9y')
     elif lvl == 7:
-        birth_date = fake.date_between(start_date='-11',end_date='10')
+        birth_date = fake.date_between(start_date='-11',end_date='-10')
     elif lvl == 8:
         birth_date = fake.date_between(start_date='-12y',end_date='-11y')
     elif lvl == 9:
-        birth_date = fake.date_between(start_date='-13y',end_date='12y')
+        birth_date = fake.date_between(start_date='-13y',end_date='-12y')
     elif lvl == 10:
         birth_date = fake.date_between(start_date='-14y',end_date='13y')
     else:
         birth_date = fake.date_between(start_date='-16y',end_date='14y')
 
-    admission_date = fake.date_between(start_date='-1',end_date='0y')
+    admission_date = fake.date_between(start_date='-1y',end_date='-0y')
     student_level_id = lvl
     date_created = datetime.date.today()
 
@@ -130,71 +131,142 @@ def write_student(students:list):
                                 'other_name':student[3],'school_id':student[4],
                                 'birth_date':student[5],'admission_date':student[6],
                                 'student_level_id':student[7],'date_created':student[8]})
+            
+def get_students():
+
+    with open(os.path.join(pathlib.Path.cwd(),'data/seeds/student.csv'),'r') as file:
+        students = [i for i in csv.DictReader(file,delimiter=',')]
+        return students
 
 
-# read schools file
-with open(os.path.join(path,'data/seeds/school.csv'),'r') as file:
-    file_reader = csv.DictReader(file,delimiter=',')
-    school_attr = [{'id' :int(i['id']),'school_lvl':int(i['school_level'])}for i in file_reader]    #store school id's in a list
 
-for school in school_attr:
+
+def create_kg_students(school):
+
+    address_list = []
+    parent_list = []
+    student_list = []
     #kindergarten
-    if school['school_lvl'] == 1:           
-        population = random.randint(101,220) # get population of the school
-        cls_1 = math.floor(population/2)   - random.randint(1,10)
-        for _ in range(cls_1):
-            gend_dec = random.randint(1,2) # pick a gender
-            if gend_dec == 1:
-                student = gen_female_stu(school['id'],1)
-                #decide if parents live together or not
-                dec = random.randint(1,4)
-                if dec > 3:
-                    mother = parents.mother(address.create_address(),student[0])
-                    father = parents.father(address.create_address(),student[0])
-                else:
-                    adrs = address.create_address()
-                    mother = parents.mother(adrs,student[0])
-                    father =parents.father(adrs,student[0])
-              
+    # kg1
+            
+    population = random.randint(101,220) # get population of the school
+    cls_1 = math.floor(population/2)   - random.randint(1,10)
+    for _ in range(cls_1):
+        gend_dec = random.randint(1,2) # pick a gender
+        if gend_dec == 1:
+            student = gen_female_stu(school['id'],1)
+            student_list.append(student)
+            #decide if parents live together or not
+            dec = random.randint(1,4)
+            if dec > 3:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                address_list.append(addr)
+
+
+                addr = address.create_address()
+                father = parent.father(addr,student[0])
+                address_list.append(addr)
+
+                parent_list.append(mother)
+                parent_list.append(father)
+
             else:
-                student = gen_male_stu(school['id'],1)
-                #decide if parents live together or not
-                dec = random.randint(1,4)
-                if dec > 3:
-                    mother = parents.mother(address.create_address(),student[0])
-                    father = parents.father(address.create_address(),student[0])
-                else:
-                    adrs = address.create_address()
-                    mother = parents.mother(adrs,student[0])
-                    father =parents.father(adrs,student[0])
-               
-        for _ in range(population - cls_1):
-            gend_dec = random.randint(1,2) # pick a gender
-            if gend_dec == 1:
-                student = gen_female_stu(school['id'],2)
-                #decide if parents live together or not
-                dec = random.randint(1,4)
-                if dec > 3:
-                    mother = parents.mother(address.create_address(),student[0])
-                    father = parents.father(address.create_address(),student[0])
-                else:
-                    adrs = address.create_address()
-                    mother = parents.mother(adrs,student[0])
-                    father =parents.father(adrs,student[0])
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                father =parent.father(addr,student[0])
+                address_list.append(addr)
+                
+                parent_list.append(mother)
+                parent_list.append(father)
+            
+        else:
+            student = gen_male_stu(school['id'],1)
+            student_list.append(student)
+            #decide if parent live together or not
+            dec = random.randint(1,4)
+            if dec > 3:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                address_list.append(addr)
+
+                addr = address.create_address()
+                father = parent.father(addr,student[0])
+                address_list.append(addr)
+
+                parent_list.append(mother)
+                parent_list.append(father)
+
             else:
-                student = gen_male_stu(school['id'],2)
-                #decide if parents live together or not
-                dec = random.randint(1,4)
-                if dec > 3:
-                    mother = parents.mother(address.create_address(),student[0])
-                    father = parents.father(address.create_address(),student[0])
-                else:
-                    adrs = address.create_address()
-                    mother = parents.mother(adrs,student[0])
-                    father =parents.father(adrs,student[0])
-              
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                father =parent.father(addr,student[0])
+                address_list.append(addr)
+
+                parent_list.append(mother)
+                parent_list.append(father)
+
+    #kg2   
+    for _ in range(population - cls_1):
+        gend_dec = random.randint(1,2) # pick a gender
+        if gend_dec == 1:
+            student = gen_female_stu(school['id'],2)
+            student_list.append(student)
+            #decide if parent live together or not
+            dec = random.randint(1,4)
+            if dec > 3:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                address_list.append(addr)
 
 
+                addr = address.create_address()
+                father = parent.father(addr,student[0])
+                address_list.append(addr)
 
+                parent_list.append(mother)
+                parent_list.append(father)
 
+            else:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                father =parent.father(addr,student[0])
+                address_list.append(addr)
+                
+                parent_list.append(mother)
+                parent_list.append(father)
+            
+        else:
+            student = gen_male_stu(school['id'],2)
+            student_list.append(student)
+            #decide if parent live together or not
+            dec = random.randint(1,4)
+            if dec > 3:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                address_list.append(addr)
+
+                addr = address.create_address()
+                father = parent.father(addr,student[0])
+                address_list.append(addr)
+
+                parent_list.append(mother)
+                parent_list.append(father)
+
+            else:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                father =parent.father(addr,student[0])
+                address_list.append(addr)
+
+                parent_list.append(mother)
+                parent_list.append(father)
+    # write address to file
+    address.write_address(address_list)
+
+    # write parent
+    parent.write_parent(parent_list)
+
+    # write students to file
+    write_student(student_list)
 

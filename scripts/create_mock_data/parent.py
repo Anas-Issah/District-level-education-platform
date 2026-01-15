@@ -28,12 +28,13 @@ def mother(adr:str,stu_id:str)->list:
     title = random.randint(1,22)
     first_name = fake.first_name_female()
     last_name = fake.last_name()
-    phone = '"' + '{' + f"{fake.basic_phone_number()}" +','+   f"{fake.basic_phone_number()}" + '}' + '"' 
+    phone =   '{"' + fake.basic_phone_number() + '","' + fake.basic_phone_number() + '"}' 
     relatioship = 'Mother'
     educational_level = random.randint(1,5)
     occupation = random.randint(1,20)
     address_id = adr
-    alive_stutus = random.choice(['Alive','Deceased'])
+    life_status = random.randint(1,30)
+    alive_stutus = 'Alive' if life_status < 29 else 'Deceased'
     studen_id = stu_id
     date_created = fake.date_between()
 
@@ -64,12 +65,13 @@ def father(adr:str,stu_id:str)->list:
     title = random.randint(1,22)
     first_name = fake.first_name_male()
     last_name = fake.last_name()
-    phone = '"' + '{' + f"{fake.basic_phone_number()}" +','+   f"{fake.basic_phone_number()}" + '}' + '"' 
+    phone =   '{"' + fake.basic_phone_number() + '","' + fake.basic_phone_number() + '"}' 
     relatioship = 'Father'
     educational_level = random.randint(1,5)
     occupation = random.randint(1,20)
     address_id = adr
-    alive_stutus = random.choice(['Alive','Deceased'])
+    life_status = random.randint(1,30)
+    alive_stutus = 'Alive' if life_status < 29 else 'Deceased'
     studen_id = stu_id
     date_created = fake.date_between()
 
@@ -99,4 +101,9 @@ def write_parent(parents:list):
                               'educational_level':parent[7],'occupation':parent[8],
                               'address_id':parent[9],'alive_status':parent[10],'student_id':parent[11],
                               'date_created':parent[12]})
+def get_parents():
+
+    with open(os.path.join(pathlib.Path.cwd(),'data/seeds/parents.csv'),'r') as file:
+        parents = [i for i in csv.DictReader(file,delimiter=',')]
+        return parents
     
