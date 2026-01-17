@@ -152,7 +152,7 @@ def write_guardian(guardians:list):
 
     path = pathlib.Path.cwd()  #parent directory
 
-    with open(os.path.join(path,'data/seeds/guardians.csv'),'w') as file:
+    with open(os.path.join(path,'data/seeds/guardian.csv'),'w') as file:
         file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','email','phone',
                                            'gender','educational_level','occupation','address_id',
                                            'student_id','guardian_stu_rela_id','date_created'])
