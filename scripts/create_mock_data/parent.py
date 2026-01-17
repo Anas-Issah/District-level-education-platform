@@ -90,17 +90,17 @@ def father(adr:str,stu_id:str)->list:
    
 def write_parent(parents:list):
     with open(os.path.join(path,'data/seeds/parents.csv'),'w') as file:
-        file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','email','phone',
+        file_writer = csv.DictWriter(file,['id','title','first_name','last_name','other_name','email','phone',
                                         'relationship','educational_level','occupation','address_id',
                                         'alive_status','student_id','date_created'])
         file_writer.writeheader()
         for parent in parents:
-            file_writer.writerow({'id':parent[0],'first_name':parent[1],'last_name':parent[2],
-                              'other_name':parent[3],'email':parent[4],'phone':parent[5],
-                              'relationship':parent[6],
-                              'educational_level':parent[7],'occupation':parent[8],
-                              'address_id':parent[9],'alive_status':parent[10],'student_id':parent[11],
-                              'date_created':parent[12]})
+            file_writer.writerow({'id':parent[0],'title':parent[1],'first_name':parent[2],'last_name':parent[3],
+                              'other_name':parent[4],'email':parent[5],'phone':parent[6],
+                              'relationship':parent[7],
+                              'educational_level':parent[8],'occupation':parent[9],
+                              'address_id':parent[10],'alive_status':parent[11],'student_id':parent[12],
+                              'date_created':parent[13]})
 def get_parents():
 
     with open(os.path.join(pathlib.Path.cwd(),'data/seeds/parents.csv'),'r') as file:

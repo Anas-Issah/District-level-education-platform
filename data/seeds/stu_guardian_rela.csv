@@ -1,0 +1,15 @@
+id,relationship
+1,Mother
+2,Father
+3,Stepparent
+4,Grandparent
+5,Aunt
+6,Uncle
+7,Cousin
+8,Sibling
+9,Legal Guardian
+10,Foster Parent
+11,Host Parent
+12,Social Worker
+13,Family Friend
+14,Other

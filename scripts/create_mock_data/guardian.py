@@ -72,7 +72,7 @@ def create_guardian_male(rela:int,address_id:int,student_id):
     id = uuid7()
     title = random.randint(1,22)
     first_name = fake.first_name_male()
-    last_name = fake.last_name()
+    last_name = fake. last_name()
     phone = '"' + '{' + f"{fake.basic_phone_number()}" +','+   f"{fake.basic_phone_number()}" + '}' + '"' 
     gender = "Male"
     educational_level = random.randint(1,5)
@@ -97,10 +97,32 @@ def create_guardian_male(rela:int,address_id:int,student_id):
                 educational_level,occupation,address_id,student_id,
                 guardian_stu_rela,date_created]
 
+def create_parent_guardian(parent:dict)-> list:
+
+    fake = Faker('en_Us')
+    id = parent['id']
+    title = parent['title']
+    first_name = parent['first_name']
+    last_name = parent['last_name']
+    other_name = parent['other_name']
+    email = parent['email']
+    phone = parent['phone']
+    gender = 'Female' if parent['relationship'] == 'Mother' else 'Male'
+    educational_level = parent['educational_level']
+    occupation = parent['occupation']
+    address_id = parent['address_id']
+    student_id = parent['student_id']
+    guardian_stu_rela = 1 if parent['relationship'] == 'Mother' else 2
+    date_created = fake.date_between()
+
+    return [id,title,first_name,last_name,other_name,email,phone,gender,
+                educational_level,occupation,address_id,student_id,
+                guardian_stu_rela,date_created]
+    
 def write_stu_guardian_rela():
     relationships = [
-        'Mother', 'Father', 'Stepparent','Grandparent', 
-    'Aunt', 'Uncle', 'Cousin','Sibling','Legal Guardian', 
+    'Mother', 'Father', 'Stepparent','Grandparent', 
+     'Aunt','Uncle', 'Cousin','Sibling','Legal Guardian', 
     'Foster Parent', 'Host Parent', 'Social Worker',
     'Family Friend','Other'
     ]
@@ -115,7 +137,7 @@ def write_stu_guardian_rela():
         num = 1
         for rela in relationships:
             file_writer.writerow({'id':num,'relationship':rela})
-            n += 1
+            num += 1
 
 def get_stu_guardian_rela():
 
@@ -133,14 +155,15 @@ def write_guardian(guardians:list):
     with open(os.path.join(path,'data/seeds/guardians.csv'),'w') as file:
         file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','email','phone',
                                            'gender','educational_level','occupation','address_id',
-                                           'student_id','guardian_stu_rela','date_created'])
+                                           'student_id','guardian_stu_rela_id','date_created'])
         file_writer.writeheader()
     
         for guardian in guardians:
             file_writer.writerow({'id':guardian[0],'first_name':guardian[1],'last_name':guardian[2],
                                   'other_name':guardian[3],'email':guardian[4],'phone':guardian[5],
                                   'gender':guardian[6],'educational_level':guardian[7],'occupation':guardian[8],
-                                  'address_id':guardian[9],'student_id':guardian[10],'guardian_stud_id':guardian[11],
+                                  'address_id':guardian[9],'student_id':guardian[10],'guardian_stu_rela_id':guardian[11],
                                   'date_created':guardian[12]})
 
 
+write_stu_guardian_rela()

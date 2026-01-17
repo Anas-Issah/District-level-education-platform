@@ -11,6 +11,14 @@
 # Log files
 log/
 
+#python Bytecode
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # OS/system files
 .DS_Store
+
+# test file
+test.py
