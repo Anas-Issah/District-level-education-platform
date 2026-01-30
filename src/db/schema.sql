@@ -346,7 +346,9 @@ CREATE TABLE IF NOT EXISTS school(
     name VARCHAR(70) NOT NULL,
     school_code VARCHAR(10) NOT NULL,
     school_level_id INT NOT NULL,
+    circuit_id INT NOT NULL,
     CONSTRAINT fk_school_level_id FOREIGN KEY REFERENCES school_level(id),
+    CONSTRAINT fk_circuit_id FOREIGN KEY REFERENCES circuit(id),
     CONSTRAINT uq_school_code UNIQUE (school_code)
 );
 

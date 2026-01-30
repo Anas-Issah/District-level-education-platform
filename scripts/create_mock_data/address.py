@@ -71,3 +71,4 @@ def get_address():
     with open(os.path.join(path,'data/seeds/address.csv'),'r') as file:
         addresses = [i for i in csv.DictReader(file,delimiter=',')]
         return addresses
+p

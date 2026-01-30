@@ -270,3 +270,72 @@ def create_kg_students(school):
     # write students to file
     write_student(student_list)
 
+
+def create_school_students(school,lvl):
+    address_list = []
+    parent_list = []
+    student_list = []
+
+    pupulation = random.randint(30,45)
+    for _ in range(pupulation):
+        gend_dec = random.randint(1,2) # pick a gender
+        if gend_dec == 1:
+            student = gen_female_stu(school['id'],lvl)
+            student_list.append(student)
+            #decide if parents live together or not
+            dec = random.randint(1,4)
+            if dec > 3:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                address_list.append(addr)
+
+
+                addr = address.create_address()
+                father = parent.father(addr,student[0])
+                address_list.append(addr)
+
+                parent_list.append(mother)
+                parent_list.append(father)
+
+            else:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                father =parent.father(addr,student[0])
+                address_list.append(addr)
+                
+                parent_list.append(mother)
+                parent_list.append(father)
+            
+        else:
+            student = gen_male_stu(school['id'],lvl)
+            student_list.append(student)
+            #decide if parent live together or not
+            dec = random.randint(1,4)
+            if dec > 3:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                address_list.append(addr)
+
+                addr = address.create_address()
+                father = parent.father(addr,student[0])
+                address_list.append(addr)
+
+                parent_list.append(mother)
+                parent_list.append(father)
+
+            else:
+                addr = address.create_address()
+                mother = parent.mother(addr,student[0])
+                father =parent.father(addr,student[0])
+                address_list.append(addr)
+
+                parent_list.append(mother)
+                parent_list.append(father)
+    # write address to file
+    address.write_address(address_list)
+
+    # write parent
+    parent.write_parent(parent_list)
+
+    # write students to file
+    write_student(student_list)
