@@ -1,4 +1,5 @@
-import csv, pathlib, os
+import os,pathlib,csv
+import math, random
 
 """
 script that writes data to a csv file for insertion
@@ -22,11 +23,8 @@ def write_school_lvls():
             num += 1
 
 
-def write_circuits():
+def write_circuits(circuits:list):
     path = pathlib.Path.cwd()  #parent directory
-    circuits  = [
-        'A','B','C','D','ABESIM','ATRONIE'
-    ]
     num = 1          
     with open(os.path.join(path,'data/seeds/circuit.csv'),'w') as file:
         file_writer = csv.DictWriter(file,['id','circuit_name'])
@@ -58,59 +56,78 @@ def generate_school_code(num:int) -> str:
         return prefix + '0' + str(num)
     else:
         return prefix + str(num)
+    
+def header_writer():
+    path = os.path.join(pathlib.Path.cwd(),'data/seeds/schools.csv')
+   
+    if pathlib.Path(path).exists() == False:
+        with open(path,'w') as file:
+            file_writer = csv.DictWriter(file,['id','name','school_code','school_level_id','circuit_id'])
+            file_writer.writeheader()
+        
+        
              
 def write_kg_schools(kg_schools,c_id):
-    path = pathlib.Path.cwd()  #parent directory
 
-    num = 1          
+    path = pathlib.Path.cwd()  #parent directory
+    id = len(get_schl_id_lvl())
+
     with open(os.path.join(path,'data/seeds/schools.csv'),'a') as file:
-        file_writer = csv.DictWriter(file,['id','name','school_code','school_level_id'])
-        file_writer.writeheader()
+        file_writer = csv.writer(file)
         for sch in kg_schools:
-            file_writer.writerow({'id':num,'name':sch['school'],'school_code':generate_school_code(num),
-            'school_level_id':1,'circuit_id':c_id})
-            num += 1
+            id += 1
+            file_writer.writerow([id,sch,generate_school_code(id),1,c_id])
+      
 
 def write_primary_schools(primary_schools,c_id):
     path = pathlib.Path.cwd()  #parent directory
+    id = len(get_schl_id_lvl())
 
-    num = 1          
     with open(os.path.join(path,'data/seeds/schools.csv'),'a') as file:
-        file_writer = csv.DictWriter(file,['id','name','school_code','school_level_id'])
-        file_writer.writeheader()
+        file_writer = csv.writer(file)
         for sch in primary_schools:
-            file_writer.writerow({'id':num,'name':sch['school'],'school_code':generate_school_code(num),
-            'school_level_id':2,'circuit_id':c_id})
-            num += 1
+            id += 1
+            file_writer.writerow([id,sch,generate_school_code(id),2,c_id])
 
 def write_jhs_schools(jhs_schools,c_id):
     path = pathlib.Path.cwd()  #parent directory
+    id = len(get_schl_id_lvl())
 
-    num = 1          
     with open(os.path.join(path,'data/seeds/schools.csv'),'a') as file:
-        file_writer = csv.DictWriter(file,['id','name','school_code','school_level_id'])
-        file_writer.writeheader()
+        file_writer = csv.writer(file)
         for sch in jhs_schools:
-            file_writer.writerow({'id':num,'name':sch['school'],'school_code':generate_school_code(num),
-            'school_level_id':3,'circuit_id':c_id})
-            num += 1
+            id += 1
+            file_writer.writerow([id,sch,generate_school_code(id),3,c_id])
 
 def write_basic_schools(basic_schools,c_id):
     path = pathlib.Path.cwd()  #parent directory
+    id = len(get_schl_id_lvl())
 
-    num = 1          
     with open(os.path.join(path,'data/seeds/schools.csv'),'a') as file:
-        file_writer = csv.DictWriter(file,['id','name','school_code','school_level_id'])
-        file_writer.writeheader()
+        file_writer = csv.writer(file)
         for sch in basic_schools:
-            file_writer.writerow({'id':num,'name':sch['school'],'school_code':generate_school_code(num),
-            'school_level_id':4,'circuit_id':c_id})
-            num += 1
-
+            id += 1
+            file_writer.writerow([id,sch,generate_school_code(id),4,c_id])
+            
 def get_schl_id_lvl():
 
     path = pathlib.Path.cwd()  #parent directory
     # read schools file
-    with open(os.path.join(path,'data/seeds/school.csv'),'r') as file:
+    with open(os.path.join(path,'data/seeds/schools.csv'),'r') as file:
         file_reader = csv.DictReader(file,delimiter=',')
         return [{'id' :int(i['id']),'school_lvl':int(i['school_level_id'])}for i in file_reader]    #store school id and lvl in a list
+
+def dist_schls(circuit_ids:list,num_schls:int):
+    num_circuit = len(circuit_ids)
+    shared = (num_schls - random.randint(num_circuit, num_circuit + 2))
+    base = math.floor(shared/num_circuit)
+    reminder = num_schls - (base * num_circuit)
+    dict_circuits = {n:base for n in circuit_ids}
+    while reminder != 0:
+        for key,val in dict_circuits.items():
+            if reminder != 0:
+                dict_circuits[key]  = val + 1
+                reminder -= 1
+    return dict_circuits
+
+ 

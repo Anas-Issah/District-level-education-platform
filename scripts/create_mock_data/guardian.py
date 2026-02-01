@@ -12,26 +12,7 @@ into a district-education database
 """
 
 
-# id UUID PRIMARY KEY DEFAULT uuid_generate_v7(),
-#     prefix_id INT NOT NULL,
-#     first_name VARCHAR(50) NOT NULL,
-#     last_name VARCHAR(50) NOT NULL,
-#     other_name VARCHAR(70) NULL,
-#     email VARCHAR9(70) NULL,
-#     phone VARCHAR(14) [],
-#     gender gender_type NOT NULL,
-#     education_level_id INT NOT NULL,
-#     occupation_id INT NOT NULL,
-#     address_id INT NOT NULL,
-#     student_id UUID NOT NULL INDEX,
-#     guardian_student_relationship_id INT  NOT NULL,
-#     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-#     CONSTRAINT fk_address_id FOREIGN KEY REFERENCES address (id),
-#     CONSTRAINT fk_student_id FOREIGN KEY REFERENCES student (id),
-#     CONSTRAINT fk_pefix_id FOREIGN KEY (prefix_id) REFERENCES name_prefix_lookup(id)
-#     CONSTRAINT fk_guardian_student_relationship_id FOREIGN KEY (guardian_student_relationship_id) REFERENCES guardian_student_relationship(id),
-#     CONSTRAINT fk_occupation_id FOREIGN KEY (occupation_id) REFERENCES occupation (id),
-#     CONSTRAINT fk_guardian_education_level FOREIGN KEY (education_level) REFERENCES education_level(id)
+
 
 def create_guardian_female(rela:int,address_id:int,student_id):
 
@@ -47,7 +28,6 @@ def create_guardian_female(rela:int,address_id:int,student_id):
     occupation = random.randint(1,20)
     address_id = address_id
     student_id = student_id
-    guardian_stu_rela = rela
     date_created = fake.date_between()
 
      # get a middle name or not
@@ -57,13 +37,13 @@ def create_guardian_female(rela:int,address_id:int,student_id):
         email = generate_email([first_name,other_name,last_name])
         return [id,title,first_name,last_name,other_name,email,phone,gender,
                 educational_level,occupation,address_id,student_id,
-                guardian_stu_rela,date_created]
+                rela,date_created]
     else:
         other_name = 'N/A'
         email = generate_email([first_name,last_name])
         return [id,title,first_name,last_name,other_name,email,phone,gender,
                 educational_level,occupation,address_id,student_id,
-                guardian_stu_rela,date_created]
+                rela,date_created]
 
 def create_guardian_male(rela:int,address_id:int,student_id):
 
@@ -79,7 +59,6 @@ def create_guardian_male(rela:int,address_id:int,student_id):
     occupation = random.randint(1,20)
     address_id = address_id
     student_id = student_id
-    guardian_stu_rela = rela
     date_created = fake.date_between()
 
      # get a middle name or not
@@ -89,13 +68,13 @@ def create_guardian_male(rela:int,address_id:int,student_id):
         email = generate_email([first_name,other_name,last_name])
         return [id,title,first_name,last_name,other_name,email,phone,gender,
                 educational_level,occupation,address_id,student_id,
-                guardian_stu_rela,date_created]
+                rela,date_created]
     else:
         other_name = 'N/A'
         email = generate_email([first_name,last_name])
         return [id,title,first_name,last_name,other_name,email,phone,gender,
                 educational_level,occupation,address_id,student_id,
-                guardian_stu_rela,date_created]
+                rela,date_created]
 
 def create_parent_guardian(parent:dict)-> list:
 
@@ -130,7 +109,7 @@ def write_stu_guardian_rela():
     path = pathlib.Path.cwd()  #parent directory
 
 
-    with open(os.path.join(path,'data/seeds/stu_guardian_rela.csv'),'w') as file:
+    with open(os.path.join(path,'data/seeds/stu_guardian_rela.csv'),'a') as file:
         file_writer = csv.DictWriter(file,['id','relationship'])
         file_writer.writeheader()
 
@@ -147,23 +126,28 @@ def get_stu_guardian_rela():
     with open(os.path.join(path,'data/seeds/stu_guardian_rela.csv'),'r') as file:
         relationships = [i for i in csv.DictReader(file,delimiter=',')]
         return relationships
+    
+def header_writer():
+    path = os.path.join(pathlib.Path.cwd(),'data/seeds/students.csv')
+   
+    if pathlib.Path(path).exists() == False:
+        with open(path,'w') as file:
+            file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','email','phone',
+                                           'gender','educational_level','occupation','address_id',
+                                           'student_id','guardian_stu_rela_id','date_created'])
+            file_writer.writeheader()
 
 def write_guardian(guardians:list):
 
+    header_writer()
     path = pathlib.Path.cwd()  #parent directory
 
-    with open(os.path.join(path,'data/seeds/guardian.csv'),'w') as file:
-        file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','email','phone',
-                                           'gender','educational_level','occupation','address_id',
-                                           'student_id','guardian_stu_rela_id','date_created'])
-        file_writer.writeheader()
+    with open(os.path.join(path,'data/seeds/guardian.csv'),'a') as file:
+        file_writer = csv.writer(file)
     
         for guardian in guardians:
-            file_writer.writerow({'id':guardian[0],'first_name':guardian[1],'last_name':guardian[2],
-                                  'other_name':guardian[3],'email':guardian[4],'phone':guardian[5],
-                                  'gender':guardian[6],'educational_level':guardian[7],'occupation':guardian[8],
-                                  'address_id':guardian[9],'student_id':guardian[10],'guardian_stu_rela_id':guardian[11],
-                                  'date_created':guardian[12]})
+            file_writer.writerow([guardian[0],guardian[1],guardian[2],guardian[3],guardian[4],
+                                  guardian[5],guardian[6],guardian[7],guardian[8],guardian[9],
+                                  guardian[10],guardian[11],guardian[12]])
 
 
-write_stu_guardian_rela()

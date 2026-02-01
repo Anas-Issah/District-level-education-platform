@@ -87,20 +87,24 @@ def father(adr:str,stu_id:str)->list:
         email = generate_email([first_name,last_name])
         return [id,title,first_name,last_name,other_name,email,phone,relatioship,educational_level,
                 occupation,address_id,alive_stutus,studen_id,date_created]
+
+def header_writer():
+    path = os.path.join(pathlib.Path.cwd(),'data/seeds/parents.csv')
    
-def write_parent(parents:list):
-    with open(os.path.join(path,'data/seeds/parents.csv'),'w') as file:
-        file_writer = csv.DictWriter(file,['id','title','first_name','last_name','other_name','email','phone',
+    if pathlib.Path(path).exists() == False:
+        with open(path,'w') as file:
+            file_writer = csv.DictWriter(file,['id','title','first_name','last_name','other_name','email','phone',
                                         'relationship','educational_level','occupation','address_id',
                                         'alive_status','student_id','date_created'])
-        file_writer.writeheader()
+            file_writer.writeheader()
+        
+def write_parent(parents:list):
+
+    header_writer()
+    with open(os.path.join(path,'data/seeds/parents.csv'),'a') as file:
+        file_writer = csv.writer(file)
         for parent in parents:
-            file_writer.writerow({'id':parent[0],'title':parent[1],'first_name':parent[2],'last_name':parent[3],
-                              'other_name':parent[4],'email':parent[5],'phone':parent[6],
-                              'relationship':parent[7],
-                              'educational_level':parent[8],'occupation':parent[9],
-                              'address_id':parent[10],'alive_status':parent[11],'student_id':parent[12],
-                              'date_created':parent[13]})
+            file_writer.writerow([parent[0],parent[1],parent[2],parent[3],parent[4],parent[5],parent[6],parent[7],parent[8],parent[9],parent[10],parent[11],parent[12],parent[13]])
 def get_parents():
 
     with open(os.path.join(pathlib.Path.cwd(),'data/seeds/parents.csv'),'r') as file:

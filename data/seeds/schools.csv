@@ -1,1 +1,57 @@
-id,name,school_code,school_level_id
+id,name,school_code,school_level_id,circuit_id
+1,Little Stars Kindergarten,0A00001,1,1
+2,Happy Kids Kindergarten,0A00002,1,1
+3,Sunshine Kindergarten,0A00003,1,1
+4,Greenfield Primary School,0A00004,4,1
+5,Oakridge Primary School,0A00005,4,1
+6,Unity Primary School,0A00006,4,1
+7,Victory Junior High School,0A00007,3,1
+8,Excel Junior High School,0A00008,3,1
+9,Future Leaders Junior High,0A00009,3,1
+10,Beacon Hill Basic School,0A00010,4,1
+11,Vision Point Basic School,0A00011,4,1
+12,Noble Path Basic School,0A00012,4,1
+13,Bright Beginnings Kindergarten,0A00013,1,2
+14,Rainbow Kids KG,0A00014,1,2
+15,Tiny Steps Kindergarten,0A00015,1,2
+16,Golden Crest Primary School,0A00016,4,2
+17,Riverside Primary School,0A00017,4,2
+18,Hilltop Primary School,0A00018,4,2
+19,Summit Peak Junior High School,0A00019,3,2
+20,Apex Junior High School,0A00020,3,2
+21,Elite Scholars Junior High,0A00021,3,2
+22,True Light Basic School,0A00022,4,2
+23,Starbridge Basic School,0A00023,4,2
+24,Millennium Basic School,0A00024,4,2
+25,Future Stars Kindergarten,0A00025,1,3
+26,Smart Kids KG,0A00026,1,3
+27,Bright Future Primary School,0A00027,4,3
+28,Heritage Primary School,0A00028,4,3
+29,Legacy Junior High School,0A00029,3,3
+30,Inspire Minds Junior High,0A00030,3,3
+31,Sunrise Basic School,0A00031,4,3
+32,Pioneer Basic School,0A00032,4,3
+33,Play & Learn Kindergarten,0A00033,1,4
+34,Rising Tots Kindergarten,0A00034,1,4
+35,Maple Leaf Primary School,0A00035,4,4
+36,Crown Heights Primary School,0A00036,4,4
+37,Global Reach Junior High School,0A00037,3,4
+38,Horizon View Junior High,0A00038,3,4
+39,Royal Scholars Basic School,0A00039,4,4
+40,Knowledge Gate Basic School,0A00040,4,4
+41,Golden Apple Kindergarten,0A00041,1,5
+42,Caring Hearts Kindergarten,0A00042,1,5
+43,Liberty Primary School,0A00043,4,5
+44,Wisdom Tree Primary School,0A00044,4,5
+45,Galaxy Junior High School,0A00045,3,5
+46,Phoenix Rise Junior High,0A00046,3,5
+47,Westview Basic School,0A00047,4,5
+48,Eastwood Basic School,0A00048,4,5
+49,Young Minds Kindergarten,0A00049,1,6
+50,Early Bloom Kindergarten,0A00050,1,6
+51,Progress Primary School,0A00051,4,6
+52,Harmony Primary School,0A00052,4,6
+53,Alpha Prime Junior High,0A00053,3,6
+54,Omega Scholars Junior High,0A00054,3,6
+55,Northstar Basic School,0A00055,4,6
+56,Southgate Basic School,0A00056,4,6

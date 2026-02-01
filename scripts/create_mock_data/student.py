@@ -37,7 +37,7 @@ def gen_female_stu(sch_id,lvl)-> list:
     elif lvl == 6:
         birth_date = fake.date_between(start_date='-10y',end_date='-9y')
     elif lvl == 7:
-        birth_date = fake.date_between(start_date='-11',end_date='-10')
+        birth_date = fake.date_between(start_date='-11y',end_date='-10y')
     elif lvl == 8:
         birth_date = fake.date_between(start_date='-12y',end_date='-11y')
     elif lvl == 9:
@@ -90,15 +90,15 @@ def gen_male_stu(sch_id,lvl):
     elif lvl == 6:
         birth_date = fake.date_between(start_date='-10y',end_date='-9y')
     elif lvl == 7:
-        birth_date = fake.date_between(start_date='-11',end_date='-10')
+        birth_date = fake.date_between(start_date='-11y',end_date='-10y')
     elif lvl == 8:
         birth_date = fake.date_between(start_date='-12y',end_date='-11y')
     elif lvl == 9:
         birth_date = fake.date_between(start_date='-13y',end_date='-12y')
     elif lvl == 10:
-        birth_date = fake.date_between(start_date='-14y',end_date='13y')
+        birth_date = fake.date_between(start_date='-14y',end_date='-13y')
     else:
-        birth_date = fake.date_between(start_date='-16y',end_date='14y')
+        birth_date = fake.date_between(start_date='-16y',end_date='-14y')
 
     admission_date = fake.date_between(start_date='-1y',end_date='-0y')
     student_level_id = lvl
@@ -118,25 +118,32 @@ def gen_male_stu(sch_id,lvl):
             id,first_name,last_name,other_name,school_id,birth_date,admission_date,
             student_level_id,date_created
         ]
+
+
+def header_writer():
+    path = os.path.join(pathlib.Path.cwd(),'data/seeds/students.csv')
+   
+    if pathlib.Path(path).exists() == False:
+        with open(path,'w') as file:
+            file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','school_id',
+                                        'birth_date','admission_date','student_level_id','date_created'])
+            file_writer.writeheader()
     
 def write_student(students:list):
-
-    with open(os.path.join(path,'data/seeds/student.csv'),'w') as file:
-        file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','school_id',
-                                        'birth_date','admission_date','student_level_id','date_created'])
-        file_writer.writeheader()
-
+    header_writer()
+    with open(os.path.join(path,'data/seeds/students.csv'),'a') as file:
+        file_writer = csv.writer(file)
         for student in students:
-            file_writer.writerow({'id':student[0],'first_name':student[1],'last_name':student[2],
-                                'other_name':student[3],'school_id':student[4],
-                                'birth_date':student[5],'admission_date':student[6],
-                                'student_level_id':student[7],'date_created':student[8]})
+            file_writer.writerow([student[0],student[1],student[2],student[3],
+                                  student[4],student[5],student[6],student[7],student[8]])
             
 def get_students():
 
-    with open(os.path.join(pathlib.Path.cwd(),'data/seeds/student.csv'),'r') as file:
-        students = [i for i in csv.DictReader(file,delimiter=',')]
-        return students
+    try:
+        with open(os.path.join(pathlib.Path.cwd(),'data/seeds/students.csv'),'r') as file:
+            return [i for i in csv.DictReader(file,delimiter=',')]
+    except FileNotFoundError:
+        return []
 
 
 
@@ -339,3 +346,4 @@ def create_school_students(school,lvl):
 
     # write students to file
     write_student(student_list)
+

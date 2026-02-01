@@ -32,25 +32,34 @@ def create_address()-> str:
     return 'BS-'+ str(first) + '-' + str(second)
 
 # Write addresses to file
+def header_writer():
+    path = os.path.join(pathlib.Path.cwd(),'data/seeds/address.csv')
+   
+    if pathlib.Path(path).exists() == False:
+        with open(path,'w') as file:
+            file_writer = csv.DictWriter(file,['id','gh_post_gps','area_id'])
+            file_writer.writeheader()
 
 def write_address(addrs:list):
 
+    header_writer()
     path = pathlib.Path.cwd()  #parent directory
 
     # get number of areas
     with open(os.path.join(path,'data/seeds/area.csv'),'r') as file:
         num_areas = len([n for n in csv.DictReader(file,delimiter=',')])
 
-    num = 1
-    with open(os.path.join(path,'data/seeds/address.csv'),'w') as file:
-        file_writer = csv.DictWriter(file,['id','gh_post_gps','area_id'])
-        file_writer.writeheader()
+    num = len(get_address())
+    with open(os.path.join(path,'data/seeds/address.csv'),'a') as file:
+        file_writer = csv.writer(file)
         for adrs in addrs:
-            file_writer.writerow({'id':num,'gh_post_gps':adrs,'area_id':random.randint(1,num_areas)})
             num += 1
+            file_writer.writerow([num,adrs,random.randint(1,num_areas)])
+            
 
 def write_single_addres():
 
+    header_writer()
     path = pathlib.Path.cwd()  #parent directory
 
     num = len(get_address())
@@ -60,15 +69,18 @@ def write_single_addres():
        
 
     with open(os.path.join(path,'data/seeds/address.csv'),'a') as file:
-        file_writer = csv.DictWriter(file,['id','gh_post_gps','area_id'])
-        file_writer.writerow({'id':num + 1,'gh_post_gps':create_address(),'area_id':random.randint(1,num_areas)})
+        file_writer = csv.writer(file)
+        file_writer.writerow([num + 1,create_address(),random.randint(1,num_areas)])
 
 def get_address():
     
-    path = pathlib.Path.cwd()  #parent directory
+    try:
+        path = pathlib.Path.cwd()  #parent directory
+        with open(os.path.join(path,'data/seeds/address.csv'),'r') as file:
+            addresses = [i for i in csv.DictReader(file,delimiter=',')]
+            return addresses
+        
+    except FileNotFoundError:
+        return []
 
-
-    with open(os.path.join(path,'data/seeds/address.csv'),'r') as file:
-        addresses = [i for i in csv.DictReader(file,delimiter=',')]
-        return addresses
-p
+print(len(get_address()))
