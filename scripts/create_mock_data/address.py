@@ -83,4 +83,3 @@ def get_address():
     except FileNotFoundError:
         return []
 
-print(len(get_address()))

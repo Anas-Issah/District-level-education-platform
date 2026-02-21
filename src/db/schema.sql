@@ -442,7 +442,7 @@ COMMENT ON TABLE academic_term IS 'Academic term is an academic year'
 
 
 --=======================================
---SCORE
+--SCORES
 --=======================================
 
 CREATE TABLE IF NOT EXISTS score(
