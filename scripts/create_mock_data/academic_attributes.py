@@ -56,13 +56,14 @@ jhs_subjects = [
 
 def all_subjects():
     subject_ids = {}
-
-    kg_subjects.extend(lower_primary_subjects)
-    kg_subjects.extend(upper_primary_subjects)
-    kg_subjects.extend(jhs_subjects)
+    subjects = []
+    subjects.extend(kg_subjects)
+    subjects.extend(lower_primary_subjects)
+    subjects.extend(upper_primary_subjects)
+    subjects.extend(jhs_subjects)
 
     n = 1
-    for sub in kg_subjects:
+    for sub in subjects:
         if sub not in subject_ids.values():
             subject_ids[n] = sub
             n += 1
@@ -153,18 +154,3 @@ def get_academic_year_id(year:str):
     for x in academic_year:
         if x['year'] == year:
             return list(x.values())[0]
-
-
-
-
-# files = {'kg':kg_subjects,'lower_primary':lower_primary_subjects,
-#          'upper_primary':upper_primary_subjects,'jhs':jhs_subjects}
-# for key in files.keys():
-#     if key == 'kg':
-#         write_subjects(files[key],'kg_subjects')
-#     elif key == 'lower_primary':
-#         write_subjects(files[key],'lower_primary_subjects')
-#     elif key == 'upper_primary':
-#         write_subjects(files[key],'upper_primary_subjects')
-#     else:
-#         write_subjects(files[key],'jhs_subjects')

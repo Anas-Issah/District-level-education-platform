@@ -1,5 +1,5 @@
 import os, pathlib, csv,random
-import student, guardian, parent, address,school_attributes
+import student, guardian, parent, address,school_attributes,scores,employee
 
 path = pathlib.Path.cwd()  #parent directory
 
@@ -102,56 +102,106 @@ junior_high_schools = [
 #             student.create_school_students(school,l)
  
 #write a guardian for each student
-guardian.write_stu_guardian_rela()
-students = student.get_students()
-parents = parent.get_parents()
+# guardian.write_stu_guardian_rela()
+# students = student.get_students()
+# parents = parent.get_parents()
 
-#separate male and female relationship
-male = ['Uncle']
-female = ['Aunt']
-parent_guardian = ['Mother','Father']
+# #separate male and female relationship
+# male = ['Uncle']
+# female = ['Aunt']
+# parent_guardian = ['Mother','Father']
 
-relationships = guardian.get_stu_guardian_rela()
-female_guardian_id = [rela['id'] for rela in relationships if rela['relationship'] not in (male + parent_guardian)]
-parent_guardian_id = [rela['id'] for rela in relationships if rela['relationship'] in parent_guardian]
-male_guardian_id = [rela['id'] for rela in relationships if rela['relationship'] not in (female + parent_guardian)]
+# relationships = guardian.get_stu_guardian_rela()
+# female_guardian_id = [rela['id'] for rela in relationships if rela['relationship'] not in (male + parent_guardian)]
+# parent_guardian_id = [rela['id'] for rela in relationships if rela['relationship'] in parent_guardian]
+# male_guardian_id = [rela['id'] for rela in relationships if rela['relationship'] not in (female + parent_guardian)]
 
 
 
-stu_guardians = []
+# stu_guardians = []
 
-for student in students:
-    guard_dec = random.randint(1,5)   # decide if guardian is the parent or not
-    gender_dec = random.randint(1,2)     #decide gender
-    print(f'Creating a guardian for {student['first_name']} {student['last_name']}')
-    if guard_dec > 4:               #guardian is not a parent
-        if gender_dec ==1:
-            address.write_single_addres()
-            num_addres = len(address.get_address())
-            stu_guardian = guardian.create_guardian_female(int(random.choice(female_guardian_id)),num_addres,student['id'])
-            stu_guardians.append(stu_guardian)
+# for student in students:
+#     guard_dec = random.randint(1,5)   # decide if guardian is the parent or not
+#     gender_dec = random.randint(1,2)     #decide gender
+#     print(f'Creating a guardian for {student['first_name']} {student['last_name']}')
+#     if guard_dec > 4:               #guardian is not a parent
+#         if gender_dec ==1:
+#             address.write_single_addres()
+#             num_addres = len(address.get_address())
+#             stu_guardian = guardian.create_guardian_female(int(random.choice(female_guardian_id)),num_addres,student['id'])
+#             stu_guardians.append(stu_guardian)
+#         else:
+#             address.write_single_addres()
+#             num_addres = len(address.get_address())
+#             stu_guardian = guardian.create_guardian_male(int(random.choice(male_guardian_id)),num_addres,student['id'])
+#             stu_guardians.append(stu_guardian)
+
+
+#     else:
+#         if gender_dec == 1:
+#             for stu_parent in parents:
+#                 if stu_parent['student_id'] == student['id'] and stu_parent['relationship'] == 'Mother':
+#                     stu_guardian = guardian.create_parent_guardian(stu_parent)
+#                     stu_guardians.append(stu_guardian)
+#                     break
+#         else:
+#             for stu_parent in parents:
+#                 if stu_parent['student_id'] == student['id'] and stu_parent['relationship'] == 'Father':
+#                     stu_guardian = guardian.create_parent_guardian(stu_parent)
+#                     stu_guardians.append(stu_guardian)
+#                     break
+
+# guardian.write_guardian(stu_guardians) #write guardians to file
+# scores.create_scores()  # create students scores file
+
+#create teachers
+teachers = []
+for k_school in kindergarten_schools:
+    schl_attr = school_attributes.get_schl_id_lvl()
+    for attr in schl_attr:
+        if attr['school_name'] == k_school:
+            schl_id = attr['id']
+    for _ in range(2):
+        for _ in range(2):
+            teachers.append(employee.gen_female_emp(schl_id))
+    employee.write_employee(teachers)
+    teachers.clear()
+
+for p_school in primary_schools:
+    for attr in schl_attr:
+        if attr['school_name'] == p_school:
+            schl_id = attr["id"]
+    for _ in range(6):
+        gender = random.randint(1,2)
+        if gender == 1:
+            teachers.append(employee.gen_female_emp(schl_id))
         else:
-            address.write_single_addres()
-            num_addres = len(address.get_address())
-            stu_guardian = guardian.create_guardian_male(int(random.choice(male_guardian_id)),num_addres,student['id'])
-            stu_guardians.append(stu_guardian)
+            teachers.append(employee.gen_male_emp(schl_id))
+    employee.write_employee(teachers)
+    teachers.clear()
 
-
-    else:
-        if gender_dec == 1:
-            for stu_parent in parents:
-                if stu_parent['student_id'] == student['id'] and stu_parent['relationship'] == 'Mother':
-                    stu_guardian = guardian.create_parent_guardian(stu_parent)
-                    stu_guardians.append(stu_guardian)
-                    break
+for b_school in basic_schools:
+    for attr in schl_attr:
+        if attr['school_name'] == p_school:
+            schl_id = attr["id"]
+    for _ in range(15):
+        gender = random.randint(1,2)
+        if gender == 1:
+            teachers.append(employee.gen_female_emp(schl_id))
         else:
-            for stu_parent in parents:
-                if stu_parent['student_id'] == student['id'] and stu_parent['relationship'] == 'Father':
-                    stu_guardian = guardian.create_parent_guardian(stu_parent)
-                    stu_guardians.append(stu_guardian)
-                    break
+            teachers.append(employee.gen_male_emp(schl_id))
+    employee.write_employee(teachers)
+    teachers.clear()
 
-guardian.write_guardian(stu_guardians) #write guardians to file
-
-
-
+for jhs_school in junior_high_schools:
+    for attr in schl_attr:
+        if attr['school_name'] == p_school:
+            schl_id = attr["id"]
+    for _ in range(9):
+        gender = random.randint(1,2)
+        if gender == 1:
+            teachers.append(employee.gen_female_emp(schl_id))
+        else:
+            teachers.append(employee.gen_male_emp(schl_id))
+    employee.write_employee(teachers)
+    teachers.clear()

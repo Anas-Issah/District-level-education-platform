@@ -1,7 +1,7 @@
 import csv, pathlib, os,sys,random
 from uuid6 import uuid7
 from faker import Faker
-from employee_attribute import ranks, specialities, religions, educational_level
+from employee_attribute import specialities, educational_level
 
 
 
@@ -51,7 +51,7 @@ def generate_email(name:list)->str:
     return email + '@example.com'
 
 
-def gen_female_emp()->list:
+def gen_female_emp(school_id)->list:
     """
     Docstring for gen_female_emp
     
@@ -72,7 +72,7 @@ def gen_female_emp()->list:
     rank = random.randint(3,12)
     address_id = 'null'
     employee_type = 1
-    station_id = ''
+    station_id = school_id
     first_appointment_date = fake.date_between(start_date='-20y',end_date='-2y')
     date_posted = fake.date_between()
     speciality_id = random.randint(1,len(specialities))
@@ -95,7 +95,7 @@ def gen_female_emp()->list:
             edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
             last_promotion_date]
     
-def gen_male_emp()->list:
+def gen_male_emp(school_id)->list:
     """
     Docstring for gen_male_emp
     
@@ -116,7 +116,7 @@ def gen_male_emp()->list:
     rank = random.randint(3,12)
     address_id = 'null'
     employee_type = 1
-    station_id = ''
+    station_id = school_id
     first_appointment_date = fake.date_between(start_date='-20y',end_date='-2y')
     date_posted = fake.date_between()
     speciality_id = random.randint(1,len(specialities))
@@ -139,28 +139,28 @@ def gen_male_emp()->list:
         return [id,title,first_name,last_name,other_name,staff_id,license_num,email,phone,birth_date,emp_gender,
             edu_level,rank,address_id,employee_type,station_id,first_appointment_date,date_posted,speciality_id,religion_id,
             last_promotion_date,date_created]
-   
 
-def write_employee(employees:list):
-
-    with open(os.path.join(path,'data/seeds/employess.csv'),'w') as file:
-        file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','staff_id','license_num',
+def hearder_writer():
+    path = os.path.join(pathlib.Path.cwd(),'data/seeds/parents.csv')
+    if pathlib.Path(path).exists() == False:
+        with open(os.path.join(pathlib.Path.cwd(),'data/seeds/parents.csv'),'w') as file:
+                  file_writer = csv.DictWriter(file,['id','first_name','last_name','other_name','staff_id','license_num',
                                         'email','phone','birth_date','gender','education_level','rank_id',
                                         'address_id','employee_type','station_id','first_appointment_date',
                                         'date_posted','speciality','last_promotion_date','date_created'])
         file_writer.writeheader()
 
+def write_employee(employees:list):
+    hearder_writer()
+    with open(os.path.join(path,'data/seeds/employess.csv'),'a') as file:
+        file_writer = csv.writer(file)
         for employee in employees:
-            file_writer.writerow({'id':employee[0],'first_name':employee[1],'last_name':employee[2],
-                                'other_name':employee[3],'staff_id':employee[4],'license_num':employee[5],
-                                'email':employee[6],'phone':employee[7],'birth_date':employee[8],
-                                'gender':employee[9],'education_level':employee[10],'rank_id':employee[11],
-                                'gender':employee[12],'education_level':employee[13],'rank_id':employee[14],
-                                'address_id':employee[15],'employee_type':employee[16],'station_id':employee[17],
-                                'first_appointment_date':employee[18],'date_posted':employee[19],
-                                'speciality':employee[20],'last_promotion_date':employee[21],'date_created':employee[22]})
+            file_writer.writerow([employee[0],employee[1],employee[2],employee[3],employee[4],employee[5],
+                                employee[6],employee[7],employee[8],employee[9],employee[10],employee[11],
+                                employee[12],employee[13],employee[14],employee[15],employee[16],employee[17],
+                                employee[18],employee[19],employee[20]])
 
 
-# CREATE AND WRITE EMPLOYEES
+
 
 

@@ -115,7 +115,7 @@ def get_schl_id_lvl():
     # read schools file
     with open(os.path.join(path,'data/seeds/schools.csv'),'r') as file:
         file_reader = csv.DictReader(file,delimiter=',')
-        return [{'id' :int(i['id']),'school_lvl':int(i['school_level_id'])}for i in file_reader]    #store school id and lvl in a list
+        return [{'id' :int(i['id']),'school_name':i['name'],'school_lvl':int(i['school_level_id'])}for i in file_reader]    #store school id and lvl in a list
 
 def dist_schls(circuit_ids:list,num_schls:int):
     num_circuit = len(circuit_ids)
@@ -130,4 +130,3 @@ def dist_schls(circuit_ids:list,num_schls:int):
                 reminder -= 1
     return dict_circuits
 
- 
