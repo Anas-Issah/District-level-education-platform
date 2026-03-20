@@ -1,5 +1,8 @@
+--=======================================
+--CREATE DATABASE
+--=======================================
+CREATE DATABASE DISTRICT_BD;
 
-BEGIN;
 --=======================================
 --CREATE UUID-OSSP EXTENSION
 --=======================================
@@ -16,32 +19,6 @@ CREATE TYPE gender_type AS ENUM ('Male','Female');
 --STATUS CUSTOM TYPE
 --=======================================
 CREATE TYPE alive_status_type AS ENUM ('Alive', 'Deceased');
-
---=======================================
---NAME PREFIX CUSTOM TYPE
---=======================================
-CREATE TYPE name_prefix AS ENUM ('Mr.', 'Ms.', 'Mrs.', 'Miss','Dr.', 'Prof.', 'Engr.',
-                                 'Arch.', 'Rev.', 'Fr.', 'Sr.', 'Br.', 'Rabbi', 'Imam',
-                                 'Pastor','Gen.', 'Col.', 'Maj.', 'Capt.', 'Lt.', 'Sgt.',
-                                  'Cpl.', 'Pvt.','Sir' , 'Dame', 'Lord', 'Lady', 'Hon.', 
-                                  'Excellency');
-
---=======================================
---GUARDIAN STUDENT RELATIONSHIP CUSTOM TYPE
---=======================================
-
-CREATE TYPE guardian_student_relationship_type AS ENUM(
-    'Mother', 'Father', 'Stepparent','Grandparent', 
-    'Aunt', 'Uncle', 'Cousin','Sibling','Legal Guardian', 
-    'Foster Parent', 'Host Parent', 'Social Worker',
-    'Family Friend','Other'
-);
-
---=======================================
---PARENT STUDENT RELATIONSHIP CUSTOM TYPE
---=======================================
-
-CREATE TYPE parent_student_rela_type ENUM('Mother','Father')
 
 --=======================================
 --NAME PREFIX LOOKUP
@@ -513,19 +490,21 @@ COMMENT ON TABLE conduct_lookup IS 'Lookup table for student conduct'
 
 
 --=======================================
---TEACHER SUBJECT
+--TEACHING LEVEL
 --=======================================
 
-CREATE TABLE IF NOT EXISTS teacher_subject(
+CREATE TABLE IF NOT EXISTS teaching_level(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     employee_id UUID NOT NULL,
-    subject_id INT NOT NULL INDEX,
+    level_id INT NOT NULL INDEX,
+    subject_id INT,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_employee_id FOREIGN KEY REFERENCES employee(id),
+    CONSTRAINT fk_level_id FOREIGN KEY REFERENCES school_level(id),
     CONSTRAINT fk_subject_id FOREIGN KEY REFERENCES subject (id)
 );
 
-COMMENT ON TABLE teacher_subject IS 'Subject taught by a teacher';
+COMMENT ON TABLE teaching_level IS 'Level and subject taught by a teacher';
 
 
 --=======================================
@@ -669,20 +648,22 @@ COMMENT ON TABLE guardian_history IS 'Table to track changes in guardian data'
 
 
 --=======================================
---TEACHER SUBJECT HISTORY
+--TEACHER LEVEL HISTORY
 --=======================================
 
-CREATE TABLE IF NOT EXISTS teacher_subject_history(
+CREATE TABLE IF NOT EXISTS teaching_levelhistory(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     employee_id UUID NOT NULL,
-    subject_id INT NOT NULL,
+    level_id INT NOT NULL INDEX,
+    subject_id INT,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_employee_id FOREIGN KEY REFERENCES employee(id),
+    CONSTRAINT fk_level_id FOREIGN KEY REFERENCES school_level(id),
     CONSTRAINT fk_subject_id FOREIGN KEY REFERENCES subject (id)
 
 );
 
-COMMENT ON TABLE teacher_subject_history IS 'Table to track changes in subjects taught by a teacher'
+COMMENT ON TABLE teacher_subject_history IS 'Table to track changes in level and subjects taught by a teacher'
 
 
 --=======================================
@@ -749,16 +730,6 @@ COMMENT ON TABLE religion IS 'Internal district transfer list'
 --=======================================
 --TRIGGER FUNCTIONS
 --=======================================
-
-
-
-
-
-
-
-
-
-
 
 
 
